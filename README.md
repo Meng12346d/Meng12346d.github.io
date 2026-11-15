@@ -3,7 +3,8 @@
 官方网站，托管于 GitHub Pages。
 
 - 访问地址：https://meng12346d.github.io/huxiaoya-site/
-- 当前状态：占位页，等待正式内容接入
+- 当前状态：已上线「湖小鸭」IP 形象介绍页（灵感源自衡水湖烤鸭蛋）
+- 主要素材：assets/huxiaoya-3view.jpg（三视图）
 
 ## 更新方式
 
