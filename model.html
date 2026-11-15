@@ -46,6 +46,7 @@
   body.embed header,body.embed aside{display:none}
   body.embed main{display:block;max-width:none;padding:0}
   body.embed .stage{min-height:100vh;border-radius:0;box-shadow:none}
+  #c{touch-action:none;display:block;width:100%;height:100%}
 </style>
 </head>
 <body>
@@ -5093,7 +5094,7 @@ const stage = document.querySelector('.stage');
 const canvas = document.getElementById('c');
 const errBox = document.getElementById('err');
 
-function showErr(html){
+function showErr(html){   try { parent.postMessage({hsy3d:'fail'}, '*'); } catch(e){}
   errBox.style.display = 'grid'; errBox.innerHTML = html;
   var hide = ['.badge', '.tools', '.hint'];
   hide.forEach(function(sel){
@@ -5104,7 +5105,7 @@ function showErr(html){
 
 function webglOK(){
   try { const c = document.createElement('canvas');
-        return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch(e){ return false; }
+        var opts={failIfMajorPerformanceCaveat:false,antialias:false,alpha:true,depth:true,stencil:false,powerPreference:'default'};var g=c.getContext('webgl2',opts)||c.getContext('webgl',opts)||c.getContext('experimental-webgl',opts);return !!g; } catch(e){ return false; }
 }
 function ctxLostTip(){
   var d=document.createElement('div');
@@ -5215,13 +5216,15 @@ function init(){
   });
 
   function resize(){
-    const w = stage.clientWidth, h = stage.clientHeight;
-    if (!w || !h) return;
+    let w = stage.clientWidth, h = stage.clientHeight;if (!w) { w = window.innerWidth || 360; }if (!h) { h = window.innerHeight || 360; }
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
   window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', function(){ setTimeout(resize, 200); });
+  if (window.visualViewport) { window.visualViewport.addEventListener('resize', function(){ setTimeout(resize, 140); }); }
+  setTimeout(resize, 320); setTimeout(resize, 900);
   resize();
 
   document.getElementById('btnSpin').addEventListener('click', function(){
@@ -5247,11 +5250,13 @@ function init(){
   });
 
   const clock = new THREE.Clock();
+  var __readySent = false;
   function loop(){
     const dt = clock.getDelta();
     if (root && spin) root.rotation.y += dt * 0.42;
     controls.update();
     renderer.render(scene, camera);
+    if (!__readySent) { __readySent = true; try { parent.postMessage({hsy3d:'ready'}, '*'); } catch(e){} }
   }
   renderer.setAnimationLoop(loop);
 }

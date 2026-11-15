@@ -152,6 +152,9 @@ table.spec tr:last-child td{border-bottom:none}
   background:rgba(255,255,255,.92);text-align:center;line-height:1.5;z-index:3}
 .ip3d-note b{color:var(--lake-dark)}
 .ip-3d-frame iframe{display:block;width:100%;height:100%;border:0}
+.ip3d-fail{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;background:#fff;border:1px solid rgba(224,123,46,.4);
+  border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.6;color:#3B352B;box-shadow:0 8px 22px rgba(62,155,181,.22)}
+.ip3d-fail a{color:var(--lake-dark);font-weight:700;text-decoration:underline}
 @media(max-width:760px){
   .ip3d-play{width:54px;height:54px}.ip3d-play svg{width:26px;height:26px}
   .ip3d-hint{font-size:11.5px;padding:5px 10px}
@@ -1192,6 +1195,13 @@ renderLedger();
 (function(){
   var btn=document.getElementById('ip3dLoad');
   if(!btn) return;
+  var notice=box=>{var n=box.querySelector('.ip3d-fail');if(!n){n=document.createElement('div');n.className='ip3d-fail';n.innerHTML='3D 模型在当前浏览器无法显示（多为微信/QQ 内置浏览器限制）。请点 <a href="model.html" target="_blank" rel="noopener">打开全屏 3D 查看器</a>，或在微信里选「···」→ 在浏览器打开。';box.appendChild(n);}};
+  var onMsg=function(ev){
+    var d=ev.data||{};
+    if(d.hsy3d==='ready'){ clearTimeout(timer); document.removeEventListener('message',onMsg); }
+    else if(d.hsy3d==='fail'){ clearTimeout(timer); var box=document.querySelector('.ip-3d-frame'); if(box) notice(box); document.removeEventListener('message',onMsg); }
+  };
+  var timer=null;
   btn.addEventListener('click',function(){
     var box=btn.parentNode;
     var f=document.createElement('iframe');
@@ -1201,6 +1211,8 @@ renderLedger();
     f.style.cssText='display:block;width:100%;height:100%;border:0;background:transparent';
     btn.remove();
     box.insertBefore(f,box.firstChild);
+    document.addEventListener('message',onMsg);
+    timer=setTimeout(function(){ notice(box); },12000);
   },{once:true});
 })();
 </script>
