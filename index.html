@@ -135,6 +135,28 @@ table.spec tr:last-child td{border-bottom:none}
 .ip-3d-open{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;background:var(--lake);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:.2s;white-space:nowrap}
 .ip-3d-open:hover{background:var(--lake-dark);transform:translateY(-1px)}
 @media(max-width:760px){.ip-3d{padding:20px}.ip-3d-frame{height:360px}}
+.ip3d-poster{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;cursor:pointer;
+  background:linear-gradient(180deg,#EAF6FB,#F8FCFD);display:grid;place-items:center;overflow:hidden}
+.ip3d-poster img{width:100%;height:100%;object-fit:contain;opacity:.92}
+.ip3d-poster::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(62,155,181,.06),rgba(62,155,181,.22))}
+.ip3d-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(62,155,181,.92);
+  color:#fff;display:grid;place-items:center;box-shadow:0 10px 26px rgba(42,122,144,.38);transition:.2s}
+.ip3d-play svg{width:30px;height:30px;margin-left:3px}
+.ip3d-poster:hover .ip3d-play{transform:translate(-50%,-50%) scale(1.08);background:var(--lake-dark)}
+.ip3d-badge{position:absolute;top:14px;left:16px;z-index:2;font-size:12px;font-weight:800;letter-spacing:.16em;
+  color:#fff;background:rgba(42,122,144,.85);padding:4px 10px;border-radius:999px}
+.ip3d-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:2;white-space:nowrap;
+  font-size:12.5px;font-weight:600;color:#2A7A90;background:rgba(255,255,255,.9);
+  padding:6px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(62,155,181,.18)}
+.ip3d-note{position:absolute;left:0;right:0;bottom:0;padding:9px 14px;font-size:12px;color:#3B352B;
+  background:rgba(255,255,255,.92);text-align:center;line-height:1.5;z-index:3}
+.ip3d-note b{color:var(--lake-dark)}
+.ip-3d-frame iframe{display:block;width:100%;height:100%;border:0}
+@media(max-width:760px){
+  .ip3d-play{width:54px;height:54px}.ip3d-play svg{width:26px;height:26px}
+  .ip3d-hint{font-size:11.5px;padding:5px 10px}
+  .ip3d-note{font-size:11px;padding:7px 10px}
+}
 
 /* ===== 产品 ===== */
 .flagship{background:var(--white)}
@@ -481,7 +503,17 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
         </a>
       </div>
       <div class="ip-3d-frame">
-        <iframe src="model.html?embed=1" title="湖小鸭 3D 互动模型" loading="lazy"></iframe>
+        <button class="ip3d-poster" type="button" id="ip3dLoad" aria-label="加载湖小鸭 3D 模型">
+          <img src="assets/ip-front.jpg" alt="湖小鸭 3D 模型预览图">
+          <span class="ip3d-badge">3D</span>
+          <span class="ip3d-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="ip3d-hint">点击加载 3D 模型 · 可拖拽旋转</span>
+        </button>
+        <div class="ip3d-note">
+          手机看不到模型？点上方<b>「打开全屏 3D 查看器」</b>；在微信内请点右上角「···」→ 在浏览器打开。
+        </div>
       </div>
     </div>
 
@@ -1155,6 +1187,22 @@ function setPrice(){
 /* 初始渲染 */
 renderCosts();
 renderLedger();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('ip3dLoad');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    var box=btn.parentNode;
+    var f=document.createElement('iframe');
+    f.src='model.html?embed=1';
+    f.title='湖小鸭 3D 互动模型';
+    f.setAttribute('allow','fullscreen');
+    f.style.cssText='display:block;width:100%;height:100%;border:0;background:transparent';
+    btn.remove();
+    box.insertBefore(f,box.firstChild);
+  },{once:true});
+})();
 </script>
 </body>
 </html>
