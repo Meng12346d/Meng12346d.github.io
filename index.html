@@ -416,6 +416,23 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
   .my-cards{grid-template-columns:repeat(3,1fr)}
   .print-tips{grid-template-columns:1fr}
 }
+
+/* 溯源图片 */
+.trace-gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 18px}
+.trace-gallery figure{margin:0;border-radius:14px;overflow:hidden;position:relative;background:#EAF6FB}
+.trace-gallery img{width:100%;height:150px;object-fit:cover;display:block}
+.trace-gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:5px 10px;font-size:11.5px;color:#fff;
+  background:linear-gradient(transparent,rgba(30,60,75,.75))}
+.trace-timeline .t-item{display:flex;gap:12px;align-items:flex-start}
+.trace-timeline .t-item .t-photo{flex:none;width:104px;height:78px;border-radius:10px;object-fit:cover;
+  border:1px solid rgba(62,155,181,.18);background:#EAF6FB}
+.trace-timeline .t-item .t-text{flex:1;min-width:0}
+.trace-photo-tag{display:inline-block;margin-left:6px;font-size:10px;color:#2A7A90;background:rgba(143,205,222,.25);
+  padding:1px 7px;border-radius:999px;vertical-align:middle}
+@media(max-width:640px){
+  .trace-gallery img{height:110px}
+  .trace-timeline .t-item .t-photo{width:84px;height:64px}
+}
 </style>
 </head>
 <body>
@@ -1152,8 +1169,16 @@ function queryTrace(){
       <div><b>产品规格</b>${b.spec}</div>
       <div><b>质检员</b>${b.inspector}（农残检测合格）</div>
     </div>
+    <div class="trace-gallery">
+      <figure><img src="assets/hero-egg.jpg" alt="本批次烤鸭蛋实拍" loading="lazy"/><figcaption>本批次产品实拍</figcaption></figure>
+      <figure><img src="assets/gift-box.jpg" alt="本批次礼盒包装实拍" loading="lazy"/><figcaption>礼盒包装实拍</figcaption></figure>
+    </div>
     <div class="trace-timeline">
-      ${b.steps.map((s,i)=>`<div class="t-item"><b>${i+1}. ${s[0]}</b> — ${s[1]}</div>`).join('')}
+      ${b.steps.map((s,i)=>`<div class="t-item">
+        <img class="t-photo" src="assets/trace-${i+1}.jpg" alt="${s[0]}工序图" loading="lazy"
+             onerror="this.onerror=null;this.src='assets/hero-egg.jpg'"/>
+        <div class="t-text"><b>${i+1}. ${s[0]}</b><span class="trace-photo-tag">工序图</span><br/>${s[1]}</div>
+      </div>`).join('')}
     </div>
   </div>`;
   box.scrollIntoView({behavior:'smooth', block:'nearest'});
