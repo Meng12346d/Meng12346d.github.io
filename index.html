@@ -440,6 +440,7 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
       <a href="#print">3D打印</a>
       <a href="#industry">产业实力</a>
       <a href="#buy">购买/合作</a>
+      <a href="javascript:void(0)" onclick="openAdmin()" style="color:var(--lake-dark);font-weight:700">管理后台</a>
     </nav>
     <button class="hamburger" id="hamburger" aria-label="菜单"><svg class="ico"><use href="#i-menu"/></svg></button>
   </div>
@@ -1382,6 +1383,15 @@ function setPrice(){
 /* 初始渲染 */
 renderCosts();
 renderLedger();
+
+/* URL 直达：?admin=1 自动打开后台登录框 */
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    if (new URLSearchParams(location.search).get('admin') === '1') {
+      setTimeout(function(){ openAdmin(); }, 400);
+    }
+  } catch(e){}
+});
 </script>
 <script>
 (function(){
