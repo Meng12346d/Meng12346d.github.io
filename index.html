@@ -364,6 +364,56 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
   .panel table.ledger th,.panel table.ledger td{padding:9px 5px}
   .panel table.ledger th:first-child,.panel table.ledger td:first-child{white-space:nowrap;padding-right:8px}
 }
+
+/* ===== 集卡 ===== */
+.cardgame{background:var(--white)}
+.draw-box{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center;margin-top:36px}
+.draw-panel{text-align:center;background:linear-gradient(160deg,#FFF8EC,#FFE9C9);border:1px solid rgba(240,153,74,.3);border-radius:22px;padding:34px 24px}
+.draw-panel .big{font-size:56px;line-height:1}
+.draw-panel h3{font-size:19px;margin:12px 0 6px}
+.draw-panel p{font-size:13.5px;color:var(--ink-soft)}
+.btn-draw{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:13px 30px;border-radius:999px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--yolk),var(--yolk-deep));color:#fff;font-size:15px;font-weight:700;font-family:inherit;
+  box-shadow:0 10px 24px -10px rgba(224,123,46,.65);transition:.2s}
+.btn-draw:hover{transform:translateY(-2px)}
+.btn-draw:disabled{opacity:.55;cursor:wait;transform:none}
+.draw-result{min-height:30px;margin-top:14px;font-size:14px;font-weight:700;color:var(--yolk-deep)}
+.my-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
+.mcard{border-radius:16px;padding:20px 10px 16px;text-align:center;border:1.5px dashed rgba(110,102,86,.3);background:var(--cream);transition:.25s;position:relative}
+.mcard .em{font-size:34px;line-height:1;filter:grayscale(1);opacity:.35}
+.mcard .nm{font-size:13px;font-weight:700;margin-top:8px;color:var(--ink-soft)}
+.mcard .no{font-size:10.5px;color:var(--ink-soft);opacity:.7}
+.mcard.owned{border-style:solid;border-color:rgba(240,153,74,.55);background:linear-gradient(165deg,#FFFDF6,#FFF3D9);box-shadow:0 10px 24px -14px rgba(224,123,46,.45)}
+.mcard.owned .em{filter:none;opacity:1}
+.mcard.owned .nm{color:var(--ink)}
+.mcard.owned::after{content:"已收集";position:absolute;top:8px;right:8px;font-size:10px;background:var(--yolk);color:#fff;border-radius:999px;padding:2px 8px}
+.card-progress{margin-top:22px;text-align:center;font-size:14.5px;color:var(--ink-soft)}
+.card-progress b{color:var(--yolk-deep);font-size:18px}
+.card-complete{display:none;margin-top:16px;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,#EAF6FB,#DFF1F6);border:1px solid rgba(62,155,181,.35);color:var(--lake-dark);font-weight:700;font-size:14.5px}
+.card-reset{margin-top:14px;background:none;border:none;color:var(--ink-soft);font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit}
+
+/* ===== 3D 打印 ===== */
+.print{background:var(--white)}
+.print-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center;margin-top:36px}
+.print-img{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(62,155,181,.15)}
+.asset-list{display:grid;gap:14px}
+.asset{display:flex;align-items:center;gap:14px;background:var(--cream);border:1px solid rgba(143,205,222,.35);border-radius:16px;padding:16px 18px}
+.asset .ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(140deg,#8FCDDE,#3E9BB5);display:grid;place-items:center;color:#fff;font-weight:800;font-size:11px;flex:none}
+.asset .inf{flex:1;min-width:0}
+.asset .inf b{display:block;font-size:14.5px}
+.asset .inf span{font-size:12.5px;color:var(--ink-soft)}
+.asset .dl{flex:none;padding:9px 18px;border-radius:999px;background:var(--lake-dark);color:#fff;font-size:13px;font-weight:600;text-decoration:none;transition:.2s}
+.asset .dl:hover{background:#23657C}
+.asset .dl.dis{background:#C9C2B4;pointer-events:none}
+.print-tips{margin-top:22px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.print-tips div{background:var(--lake-light);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--ink)}
+.print-tips b{color:var(--lake-dark)}
+
+@media(max-width:860px){
+  .draw-box,.print-grid{grid-template-columns:1fr}
+  .my-cards{grid-template-columns:repeat(3,1fr)}
+  .print-tips{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -383,6 +433,8 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
       <a href="#young">年轻衍生系列</a>
       <a href="#staple">主食伴手礼</a>
       <a href="#trace">品质溯源</a>
+      <a href="#cards">收集卡</a>
+      <a href="#print">3D打印</a>
       <a href="#industry">产业实力</a>
       <a href="#buy">购买/合作</a>
     </nav>
@@ -563,6 +615,42 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
 </section>
 
 <!-- ===== 旗舰·烤鸭蛋 ===== -->
+<section class="print" id="print">
+  <div class="container">
+    <span class="kicker">3D Print Assets</span>
+    <h2>3D IP 形象 · 打印资产下载</h2>
+    <p class="section-sub">湖小鸭 3D 模型提供可直接用于 3D 打印的 STL 文件，与保留完整材质的 glTF 源文件；模型约 10.5 万面，含荷叶、围巾、金蛋、蛋壳全套细节。</p>
+    <div class="print-grid">
+      <div class="print-img"><img src="assets/ip-front.jpg" alt="湖小鸭 3D 形象渲染图"></div>
+      <div>
+        <div class="asset-list">
+          <div class="asset">
+            <div class="ic">STL</div>
+            <div class="inf"><b>huxiaoya.stl · 3D 打印文件</b><span>二进制 STL · 105,024 面 · 5.25MB · 已合并网格可直接切片</span></div>
+            <a class="dl" href="assets/huxiaoya.stl" download>下载</a>
+          </div>
+          <div class="asset">
+            <div class="ic">GLB</div>
+            <div class="inf"><b>huxiaoya.glb · 源文件</b><span>glTF 2.0 · 1.27MB · 含贴图材质，可导入 Blender / three.js</span></div>
+            <a class="dl" href="assets/huxiaoya.glb" download>下载</a>
+          </div>
+          <div class="asset">
+            <div class="ic">STEP</div>
+            <div class="inf"><b>STEP 格式说明</b><span>STL 为网格格式，可在 Fusion 360 / Blender 中直接转换为 STEP；本页保留 STL 用于 3D 打印</span></div>
+            <span class="dl dis">见说明</span>
+          </div>
+        </div>
+        <div class="print-tips">
+          <div><b>推荐材料</b> PLA / PETG，蛋壳部分可换米白色</div>
+          <div><b>层高</b> 0.12–0.15mm，顶部荷叶需较精细</div>
+          <div><b>支撑</b> 蛋壳下缘与荷叶悬挑处加树形支撑</div>
+          <div><b>建议尺寸</b> 80–120mm 高，约 6–9 小时打印</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="flagship" id="flagship">
   <div class="container">
     <span class="kicker">Flagship</span>
@@ -744,6 +832,29 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
 </section>
 
 <!-- ===== 购买/合作 ===== -->
+<section class="cardgame" id="cards">
+  <div class="container">
+    <span class="kicker">Collect Cards</span>
+    <h2>收集卡 · 集齐湖小鸭全家福</h2>
+    <p class="section-sub">每抽一次随机获得一款湖小鸭卡片，集齐 5 款可解锁「全家福」祝福卡。收集记录实时写入数据库，后台可查看统计。</p>
+    <div class="draw-box">
+      <div class="draw-panel">
+        <div class="big">🦆</div>
+        <h3>湖小鸭卡池 · 5 款</h3>
+        <p>蛋壳卡 / 荷叶卡 / 围巾卡 / 金蛋卡 / 麻鸭卡<br>点击下方按钮抽卡</p>
+        <button class="btn-draw" id="btnDraw">🎴 抽一张卡</button>
+        <div class="draw-result" id="drawResult"></div>
+      </div>
+      <div>
+        <div class="my-cards" id="myCards"></div>
+        <div class="card-progress">收集进度：<b id="cardCount">0</b> / 5</div>
+        <div class="card-complete" id="cardDone">🎉 恭喜集齐「湖小鸭全家福」！凭此截图到线下展位兑换湖小鸭贴纸一份。</div>
+        <div style="text-align:center"><button class="card-reset" id="btnCardReset">重置我的收集册</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="buy" id="buy">
   <div class="container">
     <span class="kicker">Buy & Cooperate</span>
@@ -855,6 +966,7 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
         <button data-pane="batches" onclick="switchPane(this)"><svg class="ico"><use href="#i-search"/></svg> 溯源批次</button>
         <button data-pane="ledger" onclick="switchPane(this)"><svg class="ico"><use href="#i-book"/></svg> 账本录入</button>
         <button data-pane="costs" onclick="switchPane(this)"><svg class="ico"><use href="#i-coin"/></svg> 成本编辑</button>
+        <button data-pane="cardstats" onclick="switchPane(this)"><svg class="ico"><use href="#i-egg"/></svg> 收集卡统计</button>
       </div>
 
       <div class="admin-pane active" id="pane-orders">
@@ -862,6 +974,16 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
           <thead><tr><th>编号</th><th>称呼</th><th>电话</th><th>类型</th><th>产品</th><th>数量</th><th>状态</th><th>操作</th></tr></thead>
           <tbody id="adminOrders"></tbody>
         </table></div>
+        <div style="margin-top:12px"><button class="btn-sm btn-add" onclick="exportOrdersCSV()">⬇ 导出订单 CSV</button></div>
+      </div>
+
+      <div class="admin-pane" id="pane-cardstats">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px" id="cardStatCards"></div>
+        <div style="max-height:340px;overflow:auto"><table>
+          <thead><tr><th>时间</th><th>抽中卡片</th></tr></thead>
+          <tbody id="adminCardLog"></tbody>
+        </table></div>
+        <div style="margin-top:12px"><button class="btn-sm btn-del" onclick="clearCardLog()">清空抽卡记录</button></div>
       </div>
 
       <div class="admin-pane" id="pane-batches">
@@ -1064,6 +1186,73 @@ function renderLedger(){
 }
 
 /* ================= 预定表单 ================= */
+/* ================= 收集卡（数据库） ================= */
+const CARD_DEFS = [
+  {id:'egg',   em:'🥚', nm:'蛋壳卡'},
+  {id:'leaf',  em:'🍃', nm:'荷叶卡'},
+  {id:'scarf', em:'🧣', nm:'围巾卡'},
+  {id:'gold',  em:'💛', nm:'金蛋卡'},
+  {id:'duck',  em:'🦆', nm:'麻鸭卡'}
+];
+function renderMyCards(){
+  const owned = DB.get('myCards', []);
+  document.getElementById('myCards').innerHTML = CARD_DEFS.map(c=>`
+    <div class="mcard ${owned.includes(c.id)?'owned':''}">
+      <div class="em">${c.em}</div><div class="nm">${c.nm}</div>
+      <div class="no">${owned.includes(c.id)?'NO.0'+(CARD_DEFS.findIndex(x=>x.id===c.id)+1):'未收集'}</div>
+    </div>`).join('');
+  document.getElementById('cardCount').textContent = owned.length;
+  document.getElementById('cardDone').style.display = owned.length>=5 ? 'block' : 'none';
+}
+function drawCard(){
+  const btn = document.getElementById('btnDraw');
+  btn.disabled = true;
+  setTimeout(()=>{
+    const c = CARD_DEFS[Math.floor(Math.random()*CARD_DEFS.length)];
+    const owned = DB.get('myCards', []);
+    if(!owned.includes(c.id)) { owned.push(c.id); DB.set('myCards', owned); }
+    const draws = DB.get('draws', []);
+    draws.unshift({card:c.nm, time:new Date().toLocaleString('zh-CN')});
+    DB.set('draws', draws);
+    const got = owned.includes(c.id) && owned.length===5;
+    document.getElementById('drawResult').textContent =
+      owned.includes(c.id) ? `🎉 抽中「${c.nm}」${got?'，已集齐全家福！':'（首次抽中已收入收集册）'}` : `抽中「${c.nm}」，这张已收集过啦～`;
+    renderMyCards();
+    btn.disabled = false;
+  }, 600);
+}
+document.addEventListener('DOMContentLoaded', function(){
+  const b=document.getElementById('btnDraw');
+  if(b){ b.addEventListener('click', drawCard);
+    document.getElementById('btnCardReset').addEventListener('click', function(){
+      if(confirm('确定清空收集册？抽卡记录将保留。')){ DB.set('myCards', []); renderMyCards(); toast('已重置'); }
+    });
+    renderMyCards();
+  }
+});
+function renderAdminCards(){
+  const draws = DB.get('draws', []);
+  const counts = {}; CARD_DEFS.forEach(c=>counts[c.nm]=0);
+  draws.forEach(d=>{ if(counts[d.card]!==undefined) counts[d.card]++; });
+  const total = draws.length || 0;
+  document.getElementById('cardStatCards').innerHTML =
+    `<div style="background:var(--lake-light);border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--lake-dark)">${total}</div><div style="font-size:12px;color:var(--ink-soft)">总抽卡次数</div></div>` +
+    CARD_DEFS.map(c=>`<div style="background:var(--cream);border-radius:12px;padding:14px;text-align:center"><div style="font-size:20px">${c.em}</div><div style="font-weight:700;font-size:14px">${counts[c.nm]}</div><div style="font-size:11.5px;color:var(--ink-soft)">${c.nm}</div></div>`).join('');
+  document.getElementById('adminCardLog').innerHTML = draws.length ? draws.map(d=>`<tr><td>${d.time}</td><td>${d.card}</td></tr>`).join('')
+    : '<tr><td colspan="2" style="text-align:center;color:var(--ink-soft)">暂无抽卡记录，前台抽卡后显示在这里</td></tr>';
+}
+function clearCardLog(){ DB.set('draws', []); renderAdminCards(); toast('已清空'); }
+function exportOrdersCSV(){
+  const rows = DB.get('orders', []);
+  if(!rows.length){ toast('暂无订单数据'); return; }
+  const head = ['编号','称呼','电话','类型','产品','数量','地区','留言','状态','时间'];
+  const esc = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const csv = '\ufeff' + [head.map(esc).join(','), ...rows.map(o=>[o.no,o.name,o.phone,o.type,o.product,o.qty,o.region,o.note,o.status==='done'?'已处理':'待跟进',o.time].map(esc).join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'orders.csv'; a.click();
+}
+
 function submitOrder(e){
   e.preventDefault();
   const f = e.target;
@@ -1107,7 +1296,7 @@ function switchPane(btn){
   btn.classList.add('active');
   document.getElementById('pane-'+btn.dataset.pane).classList.add('active');
 }
-function renderAdmin(){ renderAdminOrders(); renderAdminBatches(); renderAdminLedger(); renderAdminCosts(); }
+function renderAdmin(){ renderAdminOrders(); renderAdminBatches(); renderAdminLedger(); renderAdminCosts(); renderAdminCards(); }
 
 function renderAdminOrders(){
   const rows = DB.get('orders', []);
