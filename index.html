@@ -155,6 +155,8 @@ table.spec tr:last-child td{border-bottom:none}
 .ip3d-fail{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;background:#fff;border:1px solid rgba(224,123,46,.4);
   border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.6;color:#3B352B;box-shadow:0 8px 22px rgba(62,155,181,.22)}
 .ip3d-fail a{color:var(--lake-dark);font-weight:700;text-decoration:underline}
+.ip-3d-live{display:inline-block;vertical-align:middle;margin-left:8px;font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  color:#fff;background:linear-gradient(135deg,#3E9BB5,#8FCDDE);padding:3px 10px;border-radius:999px;box-shadow:0 4px 12px -6px rgba(62,155,181,.9)}
 @media(max-width:760px){
   .ip3d-play{width:54px;height:54px}.ip3d-play svg{width:26px;height:26px}
   .ip3d-hint{font-size:11.5px;padding:5px 10px}
@@ -429,6 +431,7 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
       <a href="#home">首页</a>
       <a href="#story">品牌故事</a>
       <a href="#ip">品牌IP</a>
+      <a href="#model3d">3D模型</a>
       <a href="#flagship">烤鸭蛋</a>
       <a href="#young">年轻衍生系列</a>
       <a href="#staple">主食伴手礼</a>
@@ -547,10 +550,10 @@ footer p,footer a{font-size:13.5px;color:#BFE2EB}
     </div>
 
     <!-- 3D 互动模型 -->
-    <div class="ip-3d">
+    <div class="ip-3d" id="model3d">
       <div class="ip-3d-head">
         <div>
-          <h3>湖小鸭 · 3D 互动模型</h3>
+          <h3>湖小鸭 · 3D 互动模型 <span class="ip-3d-live">在线可旋转</span></h3>
           <p>按住拖拽即可 360° 旋转查看，滚轮缩放；约 10 万面精模，含荷叶、围巾、金蛋、蛋壳全套细节。</p>
         </div>
         <a class="ip-3d-open" href="model.html" target="_blank" rel="noopener">打开全屏 3D 查看器
@@ -1384,25 +1387,43 @@ renderLedger();
 (function(){
   var btn=document.getElementById('ip3dLoad');
   if(!btn) return;
-  var notice=box=>{var n=box.querySelector('.ip3d-fail');if(!n){n=document.createElement('div');n.className='ip3d-fail';n.innerHTML='3D 模型在当前浏览器无法显示（多为微信/QQ 内置浏览器限制）。请点 <a href="model.html" target="_blank" rel="noopener">打开全屏 3D 查看器</a>，或在微信里选「···」→ 在浏览器打开。';box.appendChild(n);}};
-  var onMsg=function(ev){
+  var loaded=false;
+  var isSmall = Math.min(window.innerWidth, window.innerHeight) < 700 || /Android|iPhone|iPod|Mobile|HarmonyOS/i.test(navigator.userAgent);
+  function notice(box){
+    var n=box.querySelector('.ip3d-fail');
+    if(!n){n=document.createElement('div');n.className='ip3d-fail';
+      n.innerHTML='3D 模型在当前浏览器无法直接显示（多为微信/QQ 内置浏览器限制）。请点 <a href="model.html" target="_blank" rel="noopener">打开全屏 3D 查看器</a>，或在微信里选「···」→ 在浏览器打开。';
+      box.appendChild(n);}
+  }
+  var timer=null;
+  function onMsg(ev){
     var d=ev.data||{};
     if(d.hsy3d==='ready'){ clearTimeout(timer); document.removeEventListener('message',onMsg); }
     else if(d.hsy3d==='fail'){ clearTimeout(timer); var box=document.querySelector('.ip-3d-frame'); if(box) notice(box); document.removeEventListener('message',onMsg); }
-  };
-  var timer=null;
-  btn.addEventListener('click',function(){
+  }
+  function load3d(){
+    if(loaded) return; loaded=true;
     var box=btn.parentNode;
     var f=document.createElement('iframe');
     f.src='model.html?embed=1';
     f.title='湖小鸭 3D 互动模型';
     f.setAttribute('allow','fullscreen');
     f.style.cssText='display:block;width:100%;height:100%;border:0;background:transparent';
-    btn.remove();
+    if(btn.parentNode) btn.remove();
     box.insertBefore(f,box.firstChild);
     document.addEventListener('message',onMsg);
-    timer=setTimeout(function(){ notice(box); },12000);
-  },{once:true});
+    timer=setTimeout(function(){ notice(box); },15000);
+  }
+  btn.addEventListener('click',load3d,{once:true});
+  // 桌面端：滚动到该区域自动加载 3D，无需点击
+  if(!isSmall && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ load3d(); io.disconnect(); } });
+    },{rootMargin:'200px'});
+    io.observe(btn);
+    // 兜底：3.5 秒后仍未进入视口也加载（页面本身就短）
+    setTimeout(function(){ if(!loaded) load3d(); },3500);
+  }
 })();
 </script>
 </body>
